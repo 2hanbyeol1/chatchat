@@ -4,8 +4,8 @@
 
 ## 개발 목적
 
-React + Typescript 공부
-Web Socket 공부
+- React + Typescript 공부
+- Web Socket 공부
 
 ## 라이브러리
 

@@ -1,7 +1,13 @@
-@import url("https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap");
+@import url("https://webfontworld.github.io/gyeonggi/GyeonggiTitle.css");
 
 * {
-  font-family: "Do Hyeon", sans-serif;
+  font-family: "GyeonggiTitle";
+}
+
+html,
+body,
+#root {
+  height: 100%;
 }
 
 body {
