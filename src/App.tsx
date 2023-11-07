@@ -8,7 +8,7 @@ import PATH from "./common/constants/path";
 
 const App: React.FC = () => {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={process.env.PUBLIC_URL}>
       <Routes>
         <Route path={PATH.main} element={<Main />} />
         <Route path={PATH.chatroom} element={<ChatRoom />} />

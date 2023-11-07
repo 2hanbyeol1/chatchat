@@ -11,3 +11,4 @@
 
 - react-router-dom
 - styled-components
+- gh-pages
