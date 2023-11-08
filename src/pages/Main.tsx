@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 
 import Title from "../components/main/Title";
-import { Container } from "../components/common/Container";
+import { CenteredContainer } from "../components/common/Container";
 import { LoginForm } from "../components/main/LoginForm";
 import Input from "../components/common/Input";
 import LoginButton from "../components/main/LoginButton";
@@ -35,7 +35,7 @@ const Main: React.FC = () => {
   };
 
   return (
-    <Container>
+    <CenteredContainer>
       <Title />
       <LoginForm onSubmit={handleSubmit}>
         <Input
@@ -52,7 +52,7 @@ const Main: React.FC = () => {
         />
         <LoginButton />
       </LoginForm>
-    </Container>
+    </CenteredContainer>
   );
 };
 

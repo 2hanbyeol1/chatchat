@@ -4,7 +4,7 @@ export const LoginForm = styled.form`
   width: 400px;
   margin: 20px 0;
 
-  div,
+  > div,
   button {
     margin-bottom: 10px;
 

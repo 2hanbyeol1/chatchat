@@ -9,7 +9,7 @@ const COLOR = {
   gray2: "#cccccc",
   gray1: "#e5e5e5",
   white: "#ffffff",
-  point: "#ff0000",
+  yellow: "#f9c23c",
 };
 
 export default COLOR;

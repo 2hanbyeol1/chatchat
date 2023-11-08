@@ -4,7 +4,5 @@ export const checkLength = (str: string, min: number, max: number): boolean => {
 
 export const hasOnlyNumber = (str: string) => {
   const regex = /^[0-9]+$/;
-  console.log(str);
-  console.log(regex.test(str));
   return regex.test(str);
 };

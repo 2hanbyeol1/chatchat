@@ -4,14 +4,15 @@ import COLOR from "../../common/constants/color";
 const Button = styled.button`
   font-size: 19px;
   width: 100%;
-  padding: 10px 0;
+  padding: 7px 0;
   border: 3px solid ${COLOR.gray6};
   border-radius: 10px;
-  background-color: ${COLOR.gray5};
+  background-color: ${COLOR.gray6};
   color: ${COLOR.white};
   &:hover {
     cursor: pointer;
-    background-color: ${(props) => !props.disabled && COLOR.gray6};
+    border: ${(props) => !props.disabled && `3px solid ${COLOR.yellow}`};
+    box-shadow: ${(props) => !props.disabled && `0 0 10px ${COLOR.yellow}`};
   }
 
   @media only screen and (max-width: 500px) {
@@ -23,7 +24,7 @@ const Button = styled.button`
 `;
 
 const LoginButton: React.FC = () => {
-  return <Button type="submit">JOIN</Button>;
+  return <Button type="submit">JOIN ✨</Button>;
 };
 
 export default LoginButton;
