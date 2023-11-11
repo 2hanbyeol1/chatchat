@@ -1,5 +1,8 @@
 import styled from "styled-components";
 
+import { useRecoilValue } from "recoil";
+import { userState } from "../../common/recoil/atom";
+
 import COLOR from "../../common/constants/color";
 import { ChatType } from "../../common/type/chatroom";
 
@@ -38,7 +41,7 @@ export const ChatBubble = styled.div`
 type ChatProps = Omit<ChatType, "id"> & {};
 
 const Chat: React.FC<ChatProps> = (props) => {
-  const currentUser: string = "한부리부리";
+  const currentUser = useRecoilValue(userState);
   const mine = currentUser === props.user;
   return (
     <ChatContainer

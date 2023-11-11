@@ -1,5 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+
+import { useRecoilValue } from "recoil";
+import { authorizedState } from "../common/recoil/atom";
+
+import socket from "../server";
 
 import { Container } from "../components/common/Container";
 import Header from "../components/chatroom/Header";
@@ -12,85 +17,60 @@ import {
 import TextForm from "../components/chatroom/TextForm";
 
 import PATH from "../common/constants/path";
-import { ChatType } from "../common/type/chatroom";
+import { MessageType } from "../common/type/chatroom";
+import { SendMessageResType } from "../common/type/res";
 import Button from "../components/common/Button";
 
 const ChatRoom: React.FC = () => {
-  const [authorized, setAuthorized] = useState(true);
+  const authorized = useRecoilValue(authorizedState);
+
+  const [messages, setMessages] = useState<MessageType[]>([]);
+
+  const chatViewRef = useRef<HTMLDivElement>(null);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!authorized) {
-      navigateToMain();
-    }
+    if (!authorized) navigateToMain();
+    socket.on("message", (message) => {
+      setMessages((prevState) => prevState.concat(message));
+    });
   }, []);
+
+  useEffect(() => {
+    if (chatViewRef.current) {
+      window.scrollTo(0, chatViewRef.current.scrollHeight);
+    }
+  }, [messages]);
+
+  const sendMessage = (message: string) => {
+    if (message === "") return;
+    socket.emit("sendMessage", message, (res: SendMessageResType) => {
+      if (!res?.ok) {
+        alert(res?.error);
+      }
+    });
+  };
 
   const navigateToMain = () => {
     navigate(PATH.main);
   };
 
-  const dummyData: ChatType[] = [
-    {
-      id: "1",
-      content: "히히",
-      date: "2023-11-07",
-      time: "10:10",
-      user: "한부리부리",
-    },
-    {
-      id: "2",
-      content:
-        "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅎㅋㅎㅋㅎㅋㅎㅋㅎㅋㅎㅋㅎㅋㅎㅎㅋㅎㅋㅎㅋㅎㅋㅎㅋㅎㅎㅋ",
-      date: "2023-11-07",
-      time: "10:07",
-      user: "돈부리",
-    },
-    {
-      id: "3",
-      content: "히히",
-      date: "2023-11-08",
-      time: "10:08",
-      user: "부리부리대마왕",
-    },
-    {
-      id: "4",
-      content: "히히",
-      date: "2023-11-08",
-      time: "10:09",
-      user: "ㅋ",
-    },
-    {
-      id: "5",
-      content: "으악 뭐임 니네",
-      date: "2023-11-08",
-      time: "10:10",
-      user: "한부리부리",
-    },
-    {
-      id: "5",
-      content:
-        "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅎㅋㅎㅋㅎㅋㅎㅋㅎㅋㅎㅋㅎㅋㅎㅎㅋㅎㅋㅎㅋㅎㅋㅎㅋㅎㅎㅋ",
-      date: "2023-11-08",
-      time: "10:10",
-      user: "한부리부리",
-    },
-  ];
-
   return (
     <Container>
       <Header />
-      <ChatView>
+      <ChatView ref={chatViewRef}>
         {authorized ? (
-          dummyData.map((chat, idx) => {
+          messages.map((chat, idx) => {
             return (
               <Chat
-                // key={chat.id}
-                key={idx}
-                user={chat.user}
+                key={chat._id + idx}
+                user={chat.user.nickname}
                 content={chat.content}
-                date={chat.date}
-                time={chat.time}
+                date="2023-11-08"
+                time="04:09"
+                // date={chat.date}
+                // time={chat.time}
               />
             );
           })
@@ -98,7 +78,7 @@ const ChatRoom: React.FC = () => {
           <WarningContainer>
             <LoginWarning>로그인 후 이용해주세요.</LoginWarning>
             <Button width="initial" onClick={navigateToMain}>
-              로그인 화면으로
+              로그인 화면으로 ✨
             </Button>
           </WarningContainer>
         )}
@@ -107,7 +87,7 @@ const ChatRoom: React.FC = () => {
         <TextForm
           handleSubmit={(e) => {
             e.preventDefault();
-            console.log(e.currentTarget.content.value);
+            sendMessage(e.currentTarget.content.value);
             e.currentTarget.content.value = "";
           }}
         />

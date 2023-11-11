@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import COLOR from "../../common/constants/color";
 
 // full screen centered container
 export const CenteredContainer = styled.div`
