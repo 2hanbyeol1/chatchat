@@ -8,8 +8,9 @@ import Input from "../components/common/Input";
 import LoginButton from "../components/main/LoginButton";
 
 import PATH from "../common/constants/path";
-
+import { LoginResType } from "../common/type/main";
 import { checkLength, hasOnlyNumber } from "../common/function/checkValue";
+import socket from "../server";
 
 const Main: React.FC = () => {
   const navigate = useNavigate();
@@ -27,7 +28,16 @@ const Main: React.FC = () => {
       return;
     }
 
-    navigateToChatRoom();
+    socket.emit("login", { nickname, password }, (res: LoginResType) => {
+      if (res?.ok && res?.data) {
+        alert(`${nickname}님 환영해요❣️`);
+        localStorage.setItem("nickname", nickname);
+        localStorage.setItem("socketId", socket.id);
+        navigateToChatRoom();
+      } else {
+        window.alert("이미 사용 중인 닉네임입니다. 비밀번호를 잊으셨나요?");
+      }
+    });
   };
 
   const navigateToChatRoom = () => {

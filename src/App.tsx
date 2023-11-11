@@ -1,5 +1,4 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import socket from "./server";
 
 // pages
 import Main from "./pages/Main";
