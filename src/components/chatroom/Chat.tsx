@@ -1,14 +1,7 @@
 import styled from "styled-components";
 
-import { ScrollView } from "../common/Container";
-
 import COLOR from "../../common/constants/color";
 import { ChatType } from "../../common/type/chatroom";
-
-export const ChatView = styled(ScrollView)`
-  margin-top: 80px; // header 70 mb 10
-  margin-bottom: 57px; // input 57
-`;
 
 const ChatContainer = styled.div`
   display: flex;
