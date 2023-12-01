@@ -45,15 +45,18 @@ const Main: React.FC = () => {
     }
 
     socket.emit("login", { nickname, password }, (res: LoginResType) => {
-      if (res?.ok && res?.data) {
-        alert(WELCOME(nickname));
-        localStorage.setItem("nickname", nickname);
-        localStorage.setItem("socketId", socket.id);
-        setCurrentUser(nickname);
-        navigateToChatRoom();
+      if (res?.ok) {
+        if (res?.data) {
+          alert(WELCOME(nickname));
+          localStorage.setItem("nickname", nickname);
+          localStorage.setItem("socketId", socket.id);
+          setCurrentUser(nickname);
+          navigateToChatRoom();
+        } else {
+          alert("이미 사용 중인 닉네임입니다. 비밀번호를 잊으셨나요?");
+        }
       } else {
         alert(res?.error);
-        alert("이미 사용 중인 닉네임입니다. 비밀번호를 잊으셨나요?");
       }
     });
   };
